@@ -622,7 +622,7 @@ font-size: 16px;
 .tooltip.expand:hover:after {
   transition: all .2s .1s ease-in-out;
 }
- #home{
+ #copyright{
     color: white;
     text-decoration: none;
     font-weight: 500;
@@ -657,6 +657,20 @@ font-size: 16px;
   -webkit-transform: rotate(-135deg);
 }
 
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            z-index: 1000;
+	}
 </style>
 </head>
 <body>
@@ -836,9 +850,13 @@ Today we celebrate the incredible work that nurses do every day to care for pati
   </a>
    </div>
 
-        <p>&copy; 2024 Designed By <a id='home' href='https://example.com'>ANTAR</a>. All Rights Reserved.</p>
+        <div id="copyright">
+            © 2024 Designed By <a href="https://asrivaalam.github.io">ANTAR</a>. All rights reserved.
+        </div>
     </footer>
-
+    
+    <div id="overlay">Copyright issue detected. Redirecting...</div>
+    
     <script src="slide.js"></script>
     <script src="panda.js"></script>
     <script>
@@ -939,6 +957,34 @@ document.getElementById('contact-form').addEventListener('submit', function(even
       document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
     }
   </script>
+    <script>
+        // Function to show overlay and redirect after 5 seconds
+        function showOverlayAndRedirect() {
+            const overlay = document.getElementById('overlay');
+            overlay.style.display = 'flex';
+            setTimeout(() => {
+                window.location.href = 'https://asrivaalam.github.io';
+            }, 5000);
+        }
 
+        // Function to monitor changes in the footer
+        function monitorFooter() {
+            const footer = document.querySelector('footer');
+            const initialFooterContent = footer.innerHTML;
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (footer.innerHTML !== initialFooterContent) {
+                        showOverlayAndRedirect();
+                    }
+                });
+            });
+            observer.observe(footer, { childList: true, subtree: true, characterData: true });
+        }
+
+        // Start monitoring the footer when the document is fully loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            monitorFooter();
+        });
+    </script>
 </body>
 </html>
